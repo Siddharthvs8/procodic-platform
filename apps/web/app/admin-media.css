@@ -1,0 +1,21 @@
+.media-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.testimonial-card{margin:0;min-width:0;min-height:250px;padding:26px;border:1px solid var(--line);background:linear-gradient(145deg,#101a29,#0b1019);display:flex;flex-direction:column}
+.quote-mark{font-size:42px;line-height:.8;color:#3abbea;font-family:Georgia,serif}
+.testimonial-card blockquote{margin:18px 0 24px;color:#d4deeb;font-size:15px;line-height:1.7;flex:1}
+.testimonial-card figcaption{display:grid;gap:3px;padding-top:16px;border-top:1px solid var(--line)}
+.testimonial-card figcaption strong{font-size:12px;color:#f5f8fd}
+.testimonial-card figcaption span{font-size:10px;color:#8b9ab0}
+.partner-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.partner-card{min-width:0;padding:24px;border:1px solid var(--line);background:linear-gradient(145deg,#101a29,#0b1019);display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:transform .2s,border-color .2s}
+.partner-card:hover{transform:translateY(-3px);border-color:rgba(0,192,255,.3)}
+.partner-card strong{font-size:16px;font-weight:560}
+.partner-card span{font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#88c8ed}
+.partner-card p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+.partner-card small{display:inline-flex;gap:5px;align-items:center;margin-top:8px;font-size:10px;color:#93c9ff}
+.partner-mark{width:58px;height:48px;margin-bottom:8px;display:grid;place-items:center;color:#63d9ff;background:rgba(18,101,255,.08);border:1px solid rgba(0,217,255,.17)}
+.partner-mark img{max-width:90%;max-height:90%;object-fit:contain}
+@media(max-width:820px){.media-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:820px){.testimonials-grid,.partner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.media-cards{grid-template-columns:1fr}}
+@media(max-width:560px){.testimonials-grid,.partner-grid{grid-template-columns:1fr}}

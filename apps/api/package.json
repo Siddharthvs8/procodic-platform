@@ -1,0 +1,36 @@
+{
+  "name": "@procodic/api",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "test": "pnpm build && node --test test/core.test.cjs",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1153.0",
+    "@nestjs/common": "11.1.6",
+    "@nestjs/core": "11.1.6",
+    "@nestjs/jwt": "11.0.1",
+    "@nestjs/platform-express": "11.1.6",
+    "@nestjs/swagger": "11.2.1",
+    "@procodic/db": "workspace:*",
+    "bcryptjs": "3.0.2",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.2",
+    "dotenv": "16.4.7",
+    "express": "5.1.0",
+    "multer": "2.0.2",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "11.0.10",
+    "@nestjs/schematics": "11.0.7",
+    "@types/express": "5.0.3",
+    "@types/multer": "2.0.0",
+    "@types/node": "24.6.0",
+    "typescript": "5.9.3"
+  }
+}
