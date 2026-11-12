@@ -1,5 +1,5 @@
 import { Global, Injectable, Module, OnModuleDestroy } from "@nestjs/common";
-import { PrismaClient } from "@procodic/db/client";
+import { PrismaClient } from "../../../../packages/db/generated/client";
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleDestroy {
