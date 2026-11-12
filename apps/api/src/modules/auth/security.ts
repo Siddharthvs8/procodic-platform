@@ -2,7 +2,7 @@ import { CanActivate, createParamDecorator, ExecutionContext, Injectable, SetMet
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import type { Request } from "express";
-import { UserRole } from "@procodic/db/client";
+import { UserRole } from "../../generated/client";
 import { PrismaService } from "../../database/prisma.module";
 
 export type SafeUser = { id: string; email: string; role: UserRole };

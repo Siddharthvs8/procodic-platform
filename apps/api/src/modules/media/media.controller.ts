@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
-import { UserRole } from "@procodic/db/client";
+import { UserRole } from "../../generated/client";
 import { memoryStorage } from "multer";
 import { AuthGuard, RequestWithUser, Roles, RolesGuard } from "../auth/security";
 import { MediaMetadataDto } from "./media.dto";

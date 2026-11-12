@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Header, Param, Patch, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { UserRole } from "@procodic/db/client";
+import { UserRole } from "../../generated/client";
 import { AuthGuard, RequestWithUser, Roles, RolesGuard } from "../auth/security";
 import { CreateLeadDto, UpdateLeadDto } from "./leads.dto";
 import { LeadsService } from "./leads.service";

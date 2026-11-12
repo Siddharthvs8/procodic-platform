@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { LeadStatus } from "@procodic/db/client";
+import { LeadStatus } from "../../generated/client";
 import { PrismaService } from "../../database/prisma.module";
 import { SafeUser } from "../auth/security";
 import { CreateLeadDto, UpdateLeadDto } from "./leads.dto";

@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { ContentType, Prisma, PublishStatus } from "@procodic/db/client";
+import { ContentType, Prisma, PublishStatus } from "../../generated/client";
 import { PrismaService } from "../../database/prisma.module";
 import { SaveContentDto } from "./content.dto";
 import { SafeUser } from "../auth/security";
