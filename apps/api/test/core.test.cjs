@@ -7,6 +7,39 @@ const { ContentService } = require("../dist/modules/content/content.service.js")
 const { LoginDto } = require("../dist/modules/auth/auth.dto.js");
 const { AuthGuard } = require("../dist/modules/auth/security.js");
 const { MediaService } = require("../dist/modules/media/media.service.js");
+const { ContentController } = require("../dist/modules/content/content.controller.js");
+
+test("logo settings default correctly and expose only the logo", async () => {
+  const empty = new ContentService({ siteSetting: { findUnique: async () => null } });
+  assert.deepEqual(await empty.brand(), { logoUrl: "/brand/procodic-logo.png" });
+  const saved = new ContentService({ siteSetting: { findUnique: async () => ({ value: { logoUrl: "saved-logo", internal: "private" } }) } });
+  assert.deepEqual(await saved.brand(), { logoUrl: "saved-logo" });
+});
+
+test("logo writes reject unsafe, mismatched and oversized images before persistence", async () => {
+  const service = new ContentService({});
+  for (const input of ["javascript:alert(1)", "https://example.com/logo.svg", "data:image/png;base64,aGVsbG8=", `data:image/jpeg;base64,${Buffer.alloc(256 * 1024 + 1, 255).toString("base64")}`]) {
+    await assert.rejects(service.saveBrand(input, { id: "admin" }), error => error.getStatus() === 400);
+  }
+});
+
+test("logo updates and resets persist and audit in one transaction", async () => {
+  const writes = [];
+  const audits = [];
+  const service = new ContentService({ $transaction: async callback => callback({ siteSetting: { upsert: async value => writes.push(value) }, auditLog: { create: async value => audits.push(value) } }) });
+  const logoUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aRZkAAAAASUVORK5CYII=";
+  await service.saveBrand(logoUrl, { id: "admin" });
+  assert.deepEqual(writes[0].update.value, { logoUrl });
+  await service.saveBrand("/brand/procodic-logo.png", { id: "admin" });
+  assert.equal(writes[1].update.value.logoUrl, "/brand/procodic-logo.png");
+  assert.equal(audits.length, 2);
+  assert.equal(audits[0].data.actorId, "admin");
+});
+
+test("only Super Admin can update logo settings", () => {
+  assert.deepEqual(Reflect.getMetadata("allowed_roles", ContentController.prototype.saveBrand), ["SUPER_ADMIN"]);
+  assert.equal(Reflect.getMetadata("__guards__", ContentController.prototype.saveBrand).length, 2);
+});
 
 test("public content queries are limited to published records", async () => {
   let query;

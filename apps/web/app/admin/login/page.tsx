@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { BrandLogo } from "@/components/brand-logo";
 import Link from "next/link";
 import { ArrowLeft, LockKeyhole } from "lucide-react";
 import { useState, type FormEvent } from "react";
@@ -25,5 +25,5 @@ export default function AdminLoginPage() {
     finally { setLoading(false); }
   }
 
-  return <main className="admin-page"><div style={{ maxWidth: 1060, margin: "0 auto" }}><Link className="text-link" href="/"><ArrowLeft size={14} /> Back to website</Link><section className="admin-login"><Image src="/brand/procodic-logo.png" width={1313} height={265} alt="PROCODIC" /><h1>Welcome back.</h1><p>Sign in to manage the PROCODIC website.</p>{error && <div className="form-error-box" role="alert" style={{ marginBottom: 16 }}>{error}</div>}<form className="admin-form" onSubmit={submit}><div className="field"><label htmlFor="admin-email">Email address</label><input id="admin-email" type="email" autoComplete="username" required value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="admin@company.com" /></div><div className="field"><label htmlFor="admin-password">Password</label><input id="admin-password" type="password" autoComplete="current-password" required minLength={12} value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Enter your password" /></div><button className="button" disabled={loading} style={{ marginTop: 6 }}><LockKeyhole size={15} />{loading ? "Signing in…" : "Sign in securely"}</button></form><p style={{ marginTop: 22, fontSize: 10, color: "#6d7b91" }}>Admin access is provisioned by your system administrator.</p></section></div></main>;
+  return <main className="admin-page"><div style={{ maxWidth: 1060, margin: "0 auto" }}><Link className="text-link" href="/"><ArrowLeft size={14} /> Back to website</Link><section className="admin-login"><BrandLogo priority /><h1>Welcome back.</h1><p>Sign in to manage the PROCODIC website.</p>{error && <div className="form-error-box" role="alert" style={{ marginBottom: 16 }}>{error}</div>}<form className="admin-form" onSubmit={submit}><div className="field"><label htmlFor="admin-email">Email address</label><input id="admin-email" type="email" autoComplete="username" required value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="admin@company.com" /></div><div className="field"><label htmlFor="admin-password">Password</label><input id="admin-password" type="password" autoComplete="current-password" required minLength={12} value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Enter your password" /></div><button className="button" disabled={loading} style={{ marginTop: 6 }}><LockKeyhole size={15} />{loading ? "Signing in…" : "Sign in securely"}</button></form><p style={{ marginTop: 22, fontSize: 10, color: "#6d7b91" }}>Admin access is provisioned by your system administrator.</p></section></div></main>;
 }

@@ -18,6 +18,29 @@ const ALIASES: Record<string, ContentType> = {
 export class ContentService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async brand() {
+    const setting = await this.prisma.siteSetting.findUnique({ where: { key: "website-logo" } });
+    const value = setting?.value as { logoUrl?: string } | undefined;
+    return { logoUrl: value?.logoUrl || "/brand/procodic-logo.png" };
+  }
+
+  async saveBrand(logoUrl: string, actor: SafeUser) {
+    if (logoUrl !== "/brand/procodic-logo.png") {
+      const match = /^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]+={0,2})$/.exec(logoUrl);
+      if (!match) throw new BadRequestException("Upload a PNG, JPEG or WebP logo.");
+      const bytes = Buffer.from(match[2], "base64");
+      const valid = match[1] === "png" ? bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))
+        : match[1] === "jpeg" ? bytes.length >= 3 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255
+        : bytes.length >= 12 && bytes.toString("ascii", 0, 4) === "RIFF" && bytes.toString("ascii", 8, 12) === "WEBP";
+      if (!valid || bytes.length > 256 * 1024) throw new BadRequestException("Choose a valid logo image smaller than 256 KB.");
+    }
+    await this.prisma.$transaction(async (tx) => {
+      await tx.siteSetting.upsert({ where: { key: "website-logo" }, create: { key: "website-logo", value: { logoUrl } }, update: { value: { logoUrl } } });
+      await tx.auditLog.create({ data: { actorId: actor.id, action: "brand.logo.updated", entityType: "SITE_SETTING", entityId: null } });
+    });
+    return { logoUrl };
+  }
+
   resolveType(input: string) {
     const type = ALIASES[input.toLowerCase()] ?? ALIASES[input.toLowerCase().replaceAll("_", "-")];
     if (!type) throw new BadRequestException("Unknown content collection.");

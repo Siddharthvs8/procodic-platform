@@ -4,11 +4,22 @@ import { UserRole } from "../../generated/client";
 import { AuthGuard, RequestWithUser, Roles, RolesGuard } from "../auth/security";
 import { SaveContentDto } from "./content.dto";
 import { ContentService } from "./content.service";
+import { SaveBrandDto } from "./brand.dto";
 
 @ApiTags("content")
 @Controller()
 export class ContentController {
   constructor(private readonly content: ContentService) {}
+
+  @Get("settings/brand")
+  async brand() { return { data: await this.content.brand() }; }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.SUPER_ADMIN)
+  @Patch("admin/settings/brand")
+  async saveBrand(@Body() dto: SaveBrandDto, @Req() req: RequestWithUser) {
+    return { data: await this.content.saveBrand(dto.logoUrl, req.user) };
+  }
 
   @Get("content/:type")
   async publicList(@Param("type") type: string, @Query("page") page = "1", @Query("pageSize") pageSize = "24") {
