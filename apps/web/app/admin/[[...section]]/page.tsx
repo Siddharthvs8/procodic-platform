@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Activity, Archive, ArrowDownToLine, ArrowLeft, BarChart3, BookOpen, Boxes, BriefcaseBusiness, Building2, Check, ChevronDown, Copy, FileText, FileUp, Globe2, GraduationCap, ImageIcon, LayoutDashboard, LifeBuoy, LogOut, Menu, MessageSquareQuote, MoreHorizontal, Newspaper, Package, PanelLeftClose, Plus, Search, Settings, Shield, SlidersHorizontal, Sparkles, Trash2, Users, X } from "lucide-react";
 import type { Content } from "@/lib/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+const API = process.env.NEXT_PUBLIC_API_URL ?? (process.env.NODE_ENV === "production" ? "/api" : "http://localhost:4000/api");
 const groups = [
   { label: "Workspace", items: [{ title: "Dashboard", key: "", icon: LayoutDashboard }, { title: "Products", key: "products", icon: Package }, { title: "Product categories", key: "categories", icon: Boxes }, { title: "Industries", key: "industries", icon: Building2 }, { title: "AI research", key: "research", icon: Sparkles }, { title: "Training programs", key: "training", icon: GraduationCap }, { title: "Case studies", key: "case-studies", icon: BriefcaseBusiness }] },
   { label: "Publishing", items: [{ title: "Testimonials", key: "testimonials", icon: MessageSquareQuote }, { title: "Collaborations", key: "collaborations", icon: Users }, { title: "Team members", key: "team", icon: Users }, { title: "Blog & insights", key: "articles", icon: Newspaper }, { title: "FAQs", key: "faqs", icon: LifeBuoy }] },

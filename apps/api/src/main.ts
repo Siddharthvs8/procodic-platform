@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
   const openApi = new DocumentBuilder().setTitle("PROCODIC Content API").setDescription("Public content and private administration API").setVersion("1.0").build();
   SwaggerModule.setup("api/docs", app, SwaggerModule.createDocument(app, openApi));
-  await app.listen(Number(process.env.API_PORT ?? 4000), "0.0.0.0");
+  await app.listen(Number(process.env.PORT ?? process.env.API_PORT ?? 4000), "0.0.0.0");
 }
 
 void bootstrap();

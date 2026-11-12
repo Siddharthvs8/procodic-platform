@@ -25,7 +25,7 @@ export function ContactForm({ category, productSlug }: { category: string; produ
   async function submit(values: FormValues) {
     setMessage(""); setError("");
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api"}/leads`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? (process.env.NODE_ENV === "production" ? "/api" : "http://localhost:4000/api")}/leads`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
       if (!response.ok) throw new Error("We couldn’t send your enquiry. Please try again in a moment.");
       setMessage("Thanks for reaching out. Your enquiry is with the PROCODIC team.");
       reset({ category, productSlug, website: "" });

@@ -5,7 +5,9 @@ export type Content = {
   updatedAt?: string;
 };
 
-const apiBase = () => process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+const apiBase = () => process.env.API_INTERNAL_URL
+  ? `${process.env.API_INTERNAL_URL.replace(/\/$/, "")}/api`
+  : process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
 
 export function isSafeMediaUrl(input: string): boolean {
   if (input.startsWith("/")) {
