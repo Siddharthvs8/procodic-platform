@@ -4,7 +4,7 @@
     "api": {
       "root": "apps/api",
       "framework": "nestjs",
-      "buildCommand": "pnpm --filter @procodic/db db:generate && pnpm build"
+      "buildCommand": "pnpm --filter @procodic/db db:generate && pnpm --filter @procodic/db db:deploy && pnpm build"
     },
     "web": {
       "root": "apps/web",
