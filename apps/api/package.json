@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "nest build",
+    "build": "node ../../scripts/prepare-api-client.cjs && nest build",
     "test": "pnpm build && node --test test/core.test.cjs",
     "start": "node dist/main.js"
   },
