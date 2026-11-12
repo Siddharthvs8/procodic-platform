@@ -5,7 +5,7 @@ import type { Request } from "express";
 import { UserRole } from "../../generated/client";
 import { PrismaService } from "../../database/prisma.module";
 
-export type SafeUser = { id: string; email: string; role: UserRole };
+export type SafeUser = { id: string; name: string; email: string; role: UserRole };
 export type RequestWithUser = Request & { user: SafeUser };
 const ROLE_KEY = "allowed_roles";
 export const Roles = (...roles: UserRole[]) => SetMetadata(ROLE_KEY, roles);
@@ -20,9 +20,9 @@ export class AuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException();
     try {
       const payload = await this.jwt.verifyAsync<{ sub: string; email: string; role: UserRole }>(token);
-      const user = await this.prisma.adminUser.findUnique({ where: { id: payload.sub }, select: { id: true, email: true, role: true, active: true } });
+      const user = await this.prisma.adminUser.findUnique({ where: { id: payload.sub }, select: { id: true, name: true, email: true, role: true, active: true } });
       if (!user?.active) throw new UnauthorizedException();
-      req.user = { id: user.id, email: user.email, role: user.role };
+      req.user = { id: user.id, name: user.name, email: user.email, role: user.role };
       return true;
     } catch { throw new UnauthorizedException(); }
   }

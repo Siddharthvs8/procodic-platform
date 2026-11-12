@@ -38,6 +38,18 @@ test("admin guard rejects requests without a session token", async () => {
   await assert.rejects(guard.canActivate(context), (error) => error.getStatus() === 401);
 });
 
+test("authenticated sessions include the display name without exposing credentials", async () => {
+  const user = { id: "admin-1", name: "PROCODIC Administrator", email: "admin@example.com", role: "SUPER_ADMIN", active: true };
+  const guard = new AuthGuard(
+    { verifyAsync: async () => ({ sub: user.id }) },
+    { adminUser: { findUnique: async ({ select }) => Object.fromEntries(Object.entries(user).filter(([key]) => select[key])) } },
+  );
+  const request = { headers: { cookie: "procodic_admin=valid-session" } };
+  const context = { switchToHttp: () => ({ getRequest: () => request }) };
+  assert.equal(await guard.canActivate(context), true);
+  assert.deepEqual(request.user, { id: user.id, name: user.name, email: user.email, role: user.role });
+});
+
 test("media validation recognizes signatures and rejects unsupported bytes", () => {
   const media = new MediaService({});
   const png = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10, 0]);
