@@ -4,6 +4,7 @@
     "api": {
       "root": "apps/api",
       "framework": "nestjs",
+      "entrypoint": "src/main.ts",
       "installCommand": "pnpm install --frozen-lockfile && pnpm --filter @procodic/db db:generate && pnpm --filter @procodic/db db:deploy"
     },
     "web": {

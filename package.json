@@ -1,7 +1,7 @@
 {
   "name": "procodic-platform",
   "private": true,
-  "packageManager": "pnpm@11.25.0",
+  "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "pnpm --parallel --filter @procodic/api --filter @procodic/web dev",
     "build": "pnpm --filter @procodic/db db:generate && pnpm --filter @procodic/api build && pnpm --filter @procodic/web build",
