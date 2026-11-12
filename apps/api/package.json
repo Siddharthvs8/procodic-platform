@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nest start --watch",
     "build": "node ../../scripts/prepare-api-client.cjs && nest build",
+    "prepare:client": "node ../../scripts/prepare-api-client.cjs",
     "test": "pnpm build && node --test test/core.test.cjs",
     "start": "node dist/main.js"
   },
