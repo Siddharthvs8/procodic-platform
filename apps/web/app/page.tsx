@@ -1,142 +1,36 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { getPublished, mediaUrl, value, type Content } from "@/lib/api";
-import { HeroGraphic } from "@/components/hero-graphic";
+import { ArrowRight, ArrowUpRight, Layers3, Sparkles, GraduationCap, Check, MoveUpRight } from "lucide-react";
+import { getPublished, value } from "@/lib/api";
+import { CapabilityExplorer } from "@/components/capability-explorer";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
-const services = [
-  {
-    number: "01",
-    title: "Software, made for your business",
-    description: "Thoughtful digital products and business systems, shaped around the way your people actually work.",
-    href: "/products",
-    link: "Explore software",
-  },
-  {
-    number: "02",
-    title: "AI, applied with purpose",
-    description: "Practical machine learning and automation that solve a real problem and earn a place in the workflow.",
-    href: "/ai-research",
-    link: "Explore applied AI",
-  },
-  {
-    number: "03",
-    title: "People, ready for what’s next",
-    description: "Clear, hands-on learning that gives teams the skills and judgement to use new technology well.",
-    href: "/training",
-    link: "Explore learning",
-  },
+const expertise = [
+  { icon: Layers3, tag: "BUILD", title: "Software that fits.", description: "Connected products and custom platforms built around your people, processes, and ambitions.", href: "/products", link: "Explore software", points: ["Enterprise applications", "Workflow automation", "Product engineering"], tone: "blue" },
+  { icon: Sparkles, tag: "RETHINK", title: "AI with a purpose.", description: "Turn an emerging possibility into a practical capability. Start with the problem. Prove the value.", href: "/ai-research", link: "Discover applied AI", points: ["Applied research", "Intelligent workflows", "AI integration"], tone: "green" },
+  { icon: GraduationCap, tag: "GROW", title: "Skills that move you.", description: "Hands-on learning that gives teams the confidence to build, adapt, and make technology their own.", href: "/training", link: "Explore learning", points: ["Corporate training", "Practical workshops", "Professional development"], tone: "orange" },
 ];
-
-const approach = [
-  ["Understand the work", "We start with the people, decisions and constraints behind the brief."],
-  ["Choose what fits", "We bring research and engineering together around the outcome that matters."],
-  ["Build for what changes", "We make systems that are useful now and ready to grow with the business."],
-];
-
-const industries = [
-  "Healthcare", "Education", "Financial services", "Retail & commerce", "Manufacturing", "Professional services",
-];
-
-function Partner({ item }: { item: Content }) {
-  const logo = mediaUrl(value(item, "logoUrl"));
-  const url = value(item, "websiteUrl");
-  const content = <>
-    {logo && <img src={logo} alt="" loading="lazy" />}
-    <span>{item.title}</span>
-    {url.startsWith("https://") && <ArrowUpRight size={14} aria-hidden />}
-  </>;
-  return url.startsWith("https://")
-    ? <a className="eh-partner" href={url} target="_blank" rel="noreferrer">{content}</a>
-    : <span className="eh-partner">{content}</span>;
-}
 
 export default async function HomePage() {
-  const [publishedProducts, articles, publishedIndustries, testimonials, collaborations] = await Promise.all([
-    getPublished("products"),
-    getPublished("articles"),
-    getPublished("industries"),
-    getPublished("testimonials"),
-    getPublished("collaborations"),
-  ]);
-  const featuredProducts = publishedProducts.filter((item) => item.featured).slice(0, 3);
-  const products = featuredProducts.length ? featuredProducts : publishedProducts.slice(0, 3);
+  const [products, articles, testimonials] = await Promise.all([getPublished("products"), getPublished("articles"), getPublished("testimonials")]);
+  const featured = [...products.filter(p => p.featured), ...products.filter(p => !p.featured)].slice(0, 3);
+  return <main className="ux-home">
+    <section className="ux-hero"><div className="ux-shell ux-hero-grid">
+      <div className="ux-hero-copy"><div className="ux-eyebrow"><span className="ux-live-dot" /> ENGINEERING WHAT'S NEXT</div><h1>Better systems.<br /><span>Bigger possibilities.</span></h1><p>Software, applied AI, and the skills to use them. We help ambitious teams turn complex challenges into work that flows.</p><div className="ux-actions"><Link className="ux-btn ux-btn-primary" href="/contact">Let’s build something <ArrowUpRight size={18}/></Link><a className="ux-btn ux-btn-ghost" href="#expertise">Explore our expertise <ArrowRight size={17}/></a></div><div className="ux-hero-note"><span>Built around your business.</span><span>Designed for what comes next.</span></div></div>
+      <CapabilityExplorer />
+    </div><div className="ux-shell ux-discipline-strip"><span>ONE TEAM. CONNECTED THINKING.</span><div><span>Strategy</span><i/><span>Design</span><i/><span>Engineering</span><i/><span>Enablement</span></div></div></section>
 
-  return <main className="editorial-home">
-    <section className="eh-hero">
-      <div className="eh-shell eh-hero-layout">
-        <ScrollReveal className="eh-hero-copy" delay={70}>
-          <p className="eh-kicker">Software <span>·</span> Applied AI <span>·</span> Learning</p>
-          <h1>Make room for <em>better work.</em></h1>
-          <p className="eh-intro">We build useful software, bring AI into the right workflows, and help people put it to work.</p>
-          <div className="eh-actions">
-            <Link className="eh-button eh-button-dark" href="/contact">Talk with our team <ArrowUpRight size={16} /></Link>
-            <Link className="eh-text-link" href="/products">See what we do <ArrowRight size={15} /></Link>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal className="eh-visual" delay={150} from="right" aria-hidden="true">
-          <HeroGraphic />
-        </ScrollReveal>
-      </div>
-      <div className="eh-shell eh-hero-foot"><span>Technology with the business in mind.</span><span>PROCODIC&nbsp; / &nbsp;CODE. CREATE. ELEVATE.</span></div>
-    </section>
+    <section id="expertise" className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">OUR EXPERTISE</p><h2>Three disciplines.<br />One way forward.</h2></div><p>The right technology makes the whole business better. We connect the dots between what you need and what’s possible.</p></div><ScrollReveal className="ux-expertise-grid" stagger>{expertise.map(({icon: Icon,...item})=><article className={"ux-expertise-card ux-tone-"+item.tone} key={item.tag}><div className="ux-card-top"><div className="ux-icon"><Icon size={25} strokeWidth={1.6}/></div><span>{item.tag}</span></div><h3>{item.title}</h3><p>{item.description}</p><ul>{item.points.map(point=><li key={point}><Check size={14}/>{point}</li>)}</ul><Link href={item.href}>{item.link}<ArrowUpRight size={18}/></Link></article>)}</ScrollReveal></div></section>
 
-    <section className="eh-services eh-section">
-      <div className="eh-shell">
-        <ScrollReveal className="eh-section-heading" delay={40}>
-          <div><p className="eh-overline">What we do</p><h2>Thoughtful technology.<br /><em>Practical outcomes.</em></h2></div>
-          <p>From a first conversation to a working system, we bring the right people and disciplines around the problem.</p>
-        </ScrollReveal>
-        <ScrollReveal className="eh-service-list" delay={100} stagger>{services.map((service) => <article className="eh-service" key={service.number}>
-          <span className="eh-number">{service.number}</span>
-          <div><h3>{service.title}</h3><p>{service.description}</p></div>
-          <Link href={service.href} className="eh-service-link">{service.link}<ArrowUpRight size={15} /></Link>
-        </article>)}</ScrollReveal>
-      </div>
-    </section>
+    <section className="ux-process-section"><div className="ux-shell ux-process-grid"><div><p className="ux-eyebrow">THE WAY WE WORK</p><h2>Less complexity.<br />More momentum.</h2><p className="ux-body-copy">Good work starts with a shared understanding. We bring you into the process, make the decisions clear, and build toward a useful outcome.</p><Link className="ux-text-link" href="/about">Get to know PROCODIC <ArrowUpRight size={17}/></Link></div><ol className="ux-process-list">{[["Discover", "Understand the real challenge.", "Your people, workflows, and constraints shape the brief."],["Design & build", "Make the right thing, together.", "Turn the brief into a clear direction, then a working solution."],["Evolve", "Keep moving forward.", "Learn from real use, refine the experience, and prepare for what’s next."]].map(([label,title,copy],i)=><li key={label}><span className="ux-step-number">0{i+1}</span><div><span className="ux-step-label">{label}</span><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></div></section>
 
-    <section className="eh-approach eh-section">
-      <div className="eh-shell">
-        <ScrollReveal className="eh-approach-heading" delay={40}><p className="eh-overline">How we work</p><h2>Start with the work.<br /><em>Make the path clearer.</em></h2><p>Good technology should fit the business, help people do their best work and keep making sense as things change.</p></ScrollReveal>
-        <ScrollReveal className="eh-approach-list" delay={100} stagger>{approach.map(([title, description], index) => <article className="eh-approach-item" key={title}>
-          <span>0{index + 1}</span><h3>{title}</h3><p>{description}</p>
-        </article>)}</ScrollReveal>
-      </div>
-    </section>
+    {featured.length>0&&<section className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">OUR PRODUCTS</p><h2>Purpose-built for<br />the work ahead.</h2></div><Link className="ux-text-link" href="/products">All products <ArrowRight size={17}/></Link></div><div className="ux-work-grid">{featured.map((product,i)=><Link className="ux-work-card" href={"/products/"+product.slug} key={product.id}><div className={"ux-work-art ux-art-"+i}><Layers3 size={62} strokeWidth={.8}/><span>{value(product,"category","Business software")}</span><ArrowUpRight size={22}/></div><h3>{product.title}</h3><p>{value(product,"description",value(product,"tagline","Discover a more connected way to work."))}</p></Link>)}</div></div></section>}
 
-    {products.length > 0 && <section className="eh-products eh-section">
-      <div className="eh-shell">
-        <ScrollReveal className="eh-section-heading" delay={40}><div><p className="eh-overline">Selected products</p><h2>Made for the work<br /><em>ahead.</em></h2></div><Link className="eh-text-link" href="/products">View all products <ArrowRight size={15} /></Link></ScrollReveal>
-        <ScrollReveal className="eh-product-list" delay={100} stagger>{products.map((product) => <Link className="eh-product" href={"/products/" + product.slug} key={product.id}>
-          <div>{value(product, "category", "Product")}</div><h3>{product.title}</h3><p>{value(product, "excerpt", value(product, "description", "Explore this PROCODIC product."))}</p><ArrowUpRight size={18} />
-        </Link>)}</ScrollReveal>
-      </div>
-    </section>}
+    <section className="ux-industry-section"><div className="ux-shell ux-industry-grid"><div><p className="ux-eyebrow">BUILT FOR YOUR CONTEXT</p><h2>Different industries.<br />The same curiosity.</h2></div><div><p className="ux-body-copy">Every industry has its own language, challenges, and opportunities. That’s where we begin.</p><div className="ux-industry-chips">{["Healthcare","Education","Financial services","Retail & commerce","Manufacturing","Professional services"].map(x=><Link key={x} href="/contact?category=consultation">{x}<ArrowUpRight size={14}/></Link>)}</div></div></div></section>
 
-    <section className="eh-industries eh-section">
-      <ScrollReveal className="eh-shell eh-industries-layout" delay={70}>
-        <div><p className="eh-overline">Across industries</p><h2>Context changes<br /><em>the answer.</em></h2></div>
-        <div><p className="eh-industries-copy">We work with teams facing different rules, rhythms and responsibilities.</p><p className="eh-industry-list">{(publishedIndustries.length ? publishedIndustries.map((item) => item.title) : industries).join("  ·  ")}</p></div>
-      </ScrollReveal>
-    </section>
+    {testimonials.length>0&&<section className="ux-section"><div className="ux-shell ux-quote"><p className="ux-eyebrow">FROM OUR COLLABORATORS</p><blockquote>“{value(testimonials[0],"content",value(testimonials[0],"quote"))}”</blockquote><p><strong>{value(testimonials[0],"author",testimonials[0].title)}</strong><span>{[value(testimonials[0],"designation"),value(testimonials[0],"company")].filter(Boolean).join(" · ")}</span></p></div></section>}
 
-    {testimonials.length > 0 && <section className="eh-testimonials eh-section">
-      <div className="eh-shell"><p className="eh-overline">In good company</p><ScrollReveal className="eh-testimonial-grid" stagger>{testimonials.slice(0, 2).map((item) => <figure key={item.id}>
-        <blockquote>“{value(item, "content", value(item, "quote"))}”</blockquote>
-        <figcaption><strong>{value(item, "author", "A PROCODIC collaborator")}</strong><span>{[value(item, "designation"), value(item, "company")].filter(Boolean).join(" · ")}</span></figcaption>
-      </figure>)}</ScrollReveal></div>
-    </section>}
+    {articles.length>0&&<section className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">IDEAS IN PROGRESS</p><h2>A little perspective.<br />A new possibility.</h2></div><Link className="ux-text-link" href="/insights">Read our insights <ArrowRight size={17}/></Link></div><div className="ux-insight-grid">{articles.slice(0,3).map(article=><Link className="ux-insight" href={"/insights/"+article.slug} key={article.id}><span>{value(article,"category","Insight")}</span><h3>{article.title}</h3><span className="ux-text-link">Read the story <ArrowUpRight size={17}/></span></Link>)}</div></div></section>}
 
-    {collaborations.length > 0 && <section className="eh-partners eh-section"><div className="eh-shell"><p className="eh-overline">People we work with</p><ScrollReveal className="eh-partner-list" stagger>{collaborations.slice(0, 5).map((item) => <Partner key={item.id} item={item} />)}</ScrollReveal></div></section>}
-
-    {articles.length > 0 && <section className="eh-journal eh-section">
-      <div className="eh-shell"><ScrollReveal className="eh-section-heading" delay={40}><div><p className="eh-overline">Notes from the work</p><h2>Ideas worth<br /><em>taking further.</em></h2></div><Link className="eh-text-link" href="/insights">Visit insights <ArrowRight size={15} /></Link></ScrollReveal>
-        <ScrollReveal className="eh-article-list" delay={100} stagger>{articles.slice(0, 3).map((article) => <Link href={"/insights/" + article.slug} className="eh-article" key={article.id}><span>{value(article, "category", "Insight")}</span><h3>{article.title}</h3><ArrowUpRight size={17} /></Link>)}</ScrollReveal>
-      </div>
-    </section>}
-
-    <section className="eh-contact">
-      <ScrollReveal className="eh-shell eh-contact-layout" delay={70}><div><p className="eh-overline">Start a conversation</p><h2>What would better<br /><em>work look like?</em></h2><p>Tell us what you’re trying to move forward. We’ll help you find a useful next step.</p></div><Link className="eh-button eh-button-light" href="/contact">Let’s talk <ArrowUpRight size={16} /></Link></ScrollReveal>
-    </section>
+    <section className="ux-final-section"><div className="ux-shell ux-final"><div><p className="ux-eyebrow">YOUR NEXT CHAPTER</p><h2>Great work starts<br />with a conversation.</h2><p>A challenge, a question, or an idea. Let’s see where it takes us.</p><Link className="ux-btn" href="/contact">Start a conversation <ArrowUpRight size={18}/></Link></div><MoveUpRight className="ux-final-arrow" strokeWidth={.6} aria-hidden="true"/></div></section>
   </main>;
 }

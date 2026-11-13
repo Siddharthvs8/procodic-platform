@@ -3,6 +3,9 @@ import "./globals.css";
 import "./brand-experience.css";
 import "./editorial-site.css";
 import "./editorial-home.css";
+import "./public-premium.css";
+import "./navigation-premium.css";
+import "./journey-premium.css";
 import { SiteChrome } from "@/components/site-chrome";
 
 export const metadata: Metadata = {
