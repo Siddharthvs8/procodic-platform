@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Layers3, Sparkles, GraduationCap, Check, MoveUpRight } from "lucide-react";
 import { getPublished, value } from "@/lib/api";
 import { CapabilityExplorer } from "@/components/capability-explorer";
+import { HeroGraphic } from "@/components/hero-graphic";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const expertise = [
@@ -16,8 +17,10 @@ export default async function HomePage() {
   return <main className="ux-home">
     <section className="ux-hero"><div className="ux-shell ux-hero-grid">
       <div className="ux-hero-copy"><div className="ux-eyebrow"><span className="ux-live-dot" /> ENGINEERING WHAT'S NEXT</div><h1>Better systems.<br /><span>Bigger possibilities.</span></h1><p>Software, applied AI, and the skills to use them. We help ambitious teams turn complex challenges into work that flows.</p><div className="ux-actions"><Link className="ux-btn ux-btn-primary" href="/contact">Let’s build something <ArrowUpRight size={18}/></Link><a className="ux-btn ux-btn-ghost" href="#expertise">Explore our expertise <ArrowRight size={17}/></a></div><div className="ux-hero-note"><span>Built around your business.</span><span>Designed for what comes next.</span></div></div>
-      <CapabilityExplorer />
+      <div className="ux-hero-animation"><HeroGraphic /></div>
     </div><div className="ux-shell ux-discipline-strip"><span>ONE TEAM. CONNECTED THINKING.</span><div><span>Strategy</span><i/><span>Design</span><i/><span>Engineering</span><i/><span>Enablement</span></div></div></section>
+
+    <section className="ux-capability-section"><div className="ux-shell ux-capability-layout"><div><p className="ux-eyebrow">CONNECTED BY DESIGN</p><h2>Different capabilities.<br />Shared possibilities.</h2><p className="ux-body-copy">Explore how software, applied AI, and learning come together around your business. Choose a discipline to see the approach.</p></div><CapabilityExplorer /></div></section>
 
     <section id="expertise" className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">OUR EXPERTISE</p><h2>Three disciplines.<br />One way forward.</h2></div><p>The right technology makes the whole business better. We connect the dots between what you need and what’s possible.</p></div><ScrollReveal className="ux-expertise-grid" stagger>{expertise.map(({icon: Icon,...item})=><article className={"ux-expertise-card ux-tone-"+item.tone} key={item.tag}><div className="ux-card-top"><div className="ux-icon"><Icon size={25} strokeWidth={1.6}/></div><span>{item.tag}</span></div><h3>{item.title}</h3><p>{item.description}</p><ul>{item.points.map(point=><li key={point}><Check size={14}/>{point}</li>)}</ul><Link href={item.href}>{item.link}<ArrowUpRight size={18}/></Link></article>)}</ScrollReveal></div></section>
 
