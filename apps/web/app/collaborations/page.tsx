@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Handshake } from "lucide-react";
-import { getPublished, mediaUrl, value } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
+import { mediaUrl, value } from "@/lib/api";
 
 export const metadata: Metadata = { title: "Collaborations", description: "Verified technology and strategic collaborations with PROCODIC." };
 

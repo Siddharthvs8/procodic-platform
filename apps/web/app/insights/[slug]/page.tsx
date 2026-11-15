@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPublishedBySlug, value } from "@/lib/api";
+import { getPublishedBySlug } from "@/lib/public-content";
+import { value } from "@/lib/api";
 
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

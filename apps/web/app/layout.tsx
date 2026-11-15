@@ -6,6 +6,7 @@ import "./editorial-home.css";
 import "./public-premium.css";
 import "./navigation-premium.css";
 import "./journey-premium.css";
+import "./brand-intro.css";
 import { SiteChrome } from "@/components/site-chrome";
 
 export const metadata: Metadata = {
@@ -31,10 +32,18 @@ const themeBootstrap = `try {
   document.documentElement.dataset.theme = 'light';
 }`;
 
+const introBootstrap = `try {
+  if (!location.pathname.startsWith('/admin') && !sessionStorage.getItem('procodic-intro-v1') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.dataset.brandIntro = 'on';
+    setTimeout(function () { delete document.documentElement.dataset.brandIntro; }, 2400);
+    sessionStorage.setItem('procodic-intro-v1', 'seen');
+  }
+} catch {}`;
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head>
+      <head><link rel="preload" as="image" href="/brand/procodic-logo-refined.webp" /><script dangerouslySetInnerHTML={{ __html: themeBootstrap + introBootstrap }} /></head>
       <body><SiteChrome>{children}</SiteChrome></body>
     </html>
   );

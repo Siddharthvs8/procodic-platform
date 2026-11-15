@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpenCheck } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getPublishedBySlug, stringList, value } from "@/lib/api";
+import { getPublishedBySlug } from "@/lib/public-content";
+import { stringList, value } from "@/lib/api";
 
 type Props = { params: Promise<{slug:string}> };
 export async function generateMetadata({params}:Props):Promise<Metadata>{const {slug}=await params;const project=await getPublishedBySlug("research",slug);return project?{title:project.seoTitle||project.title,description:project.seoDescription||value(project,"abstract",value(project,"description"))}:{title:"Research project not found"}}

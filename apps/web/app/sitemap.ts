@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getPublished } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
 
 const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://procodic.com";
 

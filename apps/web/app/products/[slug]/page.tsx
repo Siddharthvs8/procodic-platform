@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getPublishedBySlug, isSafeMediaUrl, stringList, value } from "@/lib/api";
+import { getPublishedBySlug } from "@/lib/public-content";
+import { isSafeMediaUrl, stringList, value } from "@/lib/api";
 
 type Props = { params: Promise<{ slug: string }> };
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpenCheck, BriefcaseBusiness, Code2, Lightbulb, WandSparkles } from "lucide-react";
-import { getPublished, stringList, value } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
+import { stringList, value } from "@/lib/api";
 
 export const metadata: Metadata = { title: "AI Training", description: "Practical AI programs, professional upskilling and corporate workshops from PROCODIC." };
 const programs = [{ icon: Lightbulb, title: "AI fundamentals", text: "Build a shared language for AI, its current capabilities and its limitations." }, { icon: WandSparkles, title: "Generative AI in practice", text: "Understand useful patterns for generative tools, evaluation and responsible adoption." }, { icon: Code2, title: "AI automation", text: "Map repeatable workflows and learn where automation can support the work." }, { icon: BriefcaseBusiness, title: "AI for business teams", text: "Connect practical AI choices to the needs and context of your organization." }];

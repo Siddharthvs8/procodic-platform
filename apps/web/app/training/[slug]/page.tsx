@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, GraduationCap } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getPublishedBySlug, stringList, value } from "@/lib/api";
+import { getPublishedBySlug } from "@/lib/public-content";
+import { stringList, value } from "@/lib/api";
 
 type Props = { params: Promise<{slug:string}> };
 export async function generateMetadata({params}:Props):Promise<Metadata>{const {slug}=await params;const course=await getPublishedBySlug("training",slug);return course?{title:course.seoTitle||course.title,description:course.seoDescription||value(course,"description")}:{title:"Training program not found"}}

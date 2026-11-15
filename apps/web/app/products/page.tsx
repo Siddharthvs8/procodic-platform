@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ProductCatalogue } from "@/components/product-catalogue";
-import { getPublished } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
 
 export const metadata: Metadata = { title: "Products", description: "Explore PROCODIC enterprise software products and business applications." };
 

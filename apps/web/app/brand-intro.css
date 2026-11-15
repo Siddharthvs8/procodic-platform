@@ -1,0 +1,30 @@
+/* A CSS-first reveal: the page loads concurrently; there is no network gate. */
+.brand-intro { display:none; }
+html[data-brand-intro="on"] { overflow:hidden; }
+html[data-brand-intro="on"] .brand-intro { display:grid; place-items:center; position:fixed; inset:0; z-index:200; overflow:hidden; background:#040a10; color:#f7fbff; animation:brand-intro-exit .42s cubic-bezier(.65,0,.35,1) 1.18s forwards; }
+html[data-brand-intro="on"] #site-content { visibility:hidden; animation:brand-site-enter .45s ease-out 1.2s forwards; }
+.brand-intro-atmosphere { position:absolute; inset:-20%; background:radial-gradient(ellipse at 34% 48%,#0068ff20,transparent 38%),radial-gradient(ellipse at 64% 55%,#00d7df12,transparent 38%); animation:brand-atmosphere 1.6s ease-out both; }
+.brand-intro-orbit { position:absolute; width:min(70vw,760px); aspect-ratio:1; border:1px solid #4dafff16; border-radius:50%; box-shadow:0 0 90px #008cff09,inset 0 0 60px #008cff08; animation:brand-orbit 1.5s cubic-bezier(.18,.75,.2,1) both; }
+.brand-intro-orbit::after { content:""; position:absolute; inset:15%; border:1px solid #4dafff0b; border-radius:50%; }
+.brand-intro-stage { position:relative; width:min(66vw,670px); }
+.brand-intro-logo { position:relative; width:100%; animation:brand-logo-arrive 1.05s cubic-bezier(.16,1,.3,1) both; }
+.brand-intro-logo img { display:block; width:100%; height:auto; }
+.brand-intro-glint { position:absolute; inset:0; background:linear-gradient(110deg,transparent 36%,#c1ffff 48%,#fff 50%,transparent 62%) 100% 50% / 250% 100%; mask:url('/brand/procodic-logo-refined.webp') center/contain no-repeat; opacity:0; animation:brand-glint .85s ease-in-out .25s both; }
+.brand-intro-tagline { display:flex; justify-content:center; gap:1.5em; margin:35px 0 0; font:500 10px/1.5 var(--sans); letter-spacing:.38em; color:#8fa5ba; }
+.brand-intro-tagline span { animation:brand-word .65s cubic-bezier(.16,1,.3,1) .35s both; }
+.brand-intro-tagline span:nth-child(2) { animation-delay:.45s; }.brand-intro-tagline span:nth-child(3) { animation-delay:.55s; }
+.brand-intro-streaks { position:absolute; inset:0; pointer-events:none; }
+.brand-intro-streaks i { position:absolute; top:30%; right:87%; width:40vw; height:1px; transform-origin:right; background:linear-gradient(90deg,transparent,#008aff99,#69fbff); animation:brand-streak .7s cubic-bezier(.4,0,.2,1) both; }
+.brand-intro-streaks i:nth-child(2) { top:49%; animation-delay:.08s; width:48vw; }.brand-intro-streaks i:nth-child(3) { top:66%; animation-delay:.16s; width:34vw; }
+.brand-intro-skip { position:absolute; bottom:max(32px,env(safe-area-inset-bottom)); right:max(32px,env(safe-area-inset-right)); min-height:44px; padding:0 16px; display:flex; align-items:center; gap:16px; border:1px solid #9caec128; border-radius:24px; background:#ffffff04; color:#a9b8c8; cursor:pointer; font:500 11px var(--sans); }
+.brand-intro-skip:hover { color:white; border-color:#78e5ff80; }
+@keyframes brand-logo-arrive { 0% { opacity:0; transform:translateY(12px) scale(.95); clip-path:inset(0 100% 0 0); } 22% { opacity:1; } 68%,100% { opacity:1; transform:translateY(0) scale(1); clip-path:inset(0 0 0 0); } }
+@keyframes brand-glint { 0% { opacity:0; background-position:100% 50%; } 35% { opacity:.7; } 100% { opacity:0; background-position:0% 50%; } }
+@keyframes brand-word { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+@keyframes brand-streak { 0% { transform:translateX(-20vw) scaleX(.2); opacity:0; } 30% { opacity:1; } 100% { transform:translateX(3vw) scaleX(0); opacity:0; } }
+@keyframes brand-orbit { from { opacity:0; transform:scale(.6); } 45% { opacity:1; } to { opacity:0; transform:scale(1.2); } }
+@keyframes brand-atmosphere { from { opacity:0; transform:scale(.8); } 50% { opacity:1; } to { opacity:.5; transform:scale(1.1); } }
+@keyframes brand-intro-exit { to { opacity:0; visibility:hidden; transform:translateY(-12px); } }
+@keyframes brand-site-enter { from { visibility:visible; opacity:0; transform:translateY(8px); } to { visibility:visible; opacity:1; transform:translateY(0); } }
+@media(max-width:640px) { .brand-intro-stage { width:82vw; }.brand-intro-tagline { font-size:8px; letter-spacing:.24em; gap:1.2em; margin-top:25px; }.brand-intro-orbit { width:110vw; }.brand-intro-skip { bottom:24px; right:20px; } }
+@media(prefers-reduced-motion:reduce) { html[data-brand-intro="on"] { overflow:auto; }html[data-brand-intro="on"] .brand-intro { display:none; }html[data-brand-intro="on"] #site-content { visibility:visible; animation:none; } }

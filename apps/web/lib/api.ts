@@ -5,10 +5,6 @@ export type Content = {
   updatedAt?: string;
 };
 
-const apiBase = () => process.env.API_INTERNAL_URL
-  ? `${process.env.API_INTERNAL_URL.replace(/\/$/, "")}/api`
-  : process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
-
 export function isSafeMediaUrl(input: string): boolean {
   if (input.startsWith("/")) {
     try { return new URL(input, "https://procodic.invalid").origin === "https://procodic.invalid"; }
@@ -22,24 +18,6 @@ export function isSafeMediaUrl(input: string): boolean {
 
 export function mediaUrl(input: string): string {
   return isSafeMediaUrl(input) ? input : "";
-}
-
-export async function getPublished(type: string): Promise<Content[]> {
-  try {
-    const response = await fetch(`${apiBase()}/content/${encodeURIComponent(type)}`, { cache: "no-store" });
-    if (!response.ok) return [];
-    const result = await response.json() as { data?: Content[] };
-    return Array.isArray(result.data) ? result.data : [];
-  } catch { return []; }
-}
-
-export async function getPublishedBySlug(type: string, slug: string): Promise<Content | null> {
-  try {
-    const response = await fetch(`${apiBase()}/content/${encodeURIComponent(type)}/${encodeURIComponent(slug)}`, { cache: "no-store" });
-    if (!response.ok) return null;
-    const result = await response.json() as { data?: Content };
-    return result.data ?? null;
-  } catch { return null; }
 }
 
 export function value(record: Content, key: string, fallback = ""): string {

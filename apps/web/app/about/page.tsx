@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Compass, LockKeyhole, Target, Workflow } from "lucide-react";
-import { getPublished, mediaUrl, value } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
+import { mediaUrl, value } from "@/lib/api";
 
 export const metadata: Metadata = { title: "About PROCODIC", description: "The mission, principles and engineering philosophy behind PROCODIC." };
 const values = [{icon:Target,title:"Purpose before novelty",text:"Choose technology for the work it enables, not for the attention it attracts."},{icon:Workflow,title:"Engineering discipline",text:"Make systems understandable, maintainable and ready to evolve."},{icon:LockKeyhole,title:"Trust by design",text:"Treat security, privacy and responsible use as foundational decisions."},{icon:Compass,title:"Curiosity with direction",text:"Explore new ideas with rigor and bring forward what is useful."}];

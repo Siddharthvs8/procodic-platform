@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BrainCircuit, Bot, Eye, Network, ScanText, Sparkles } from "lucide-react";
-import { getPublished, value } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
+import { value } from "@/lib/api";
 
 export const metadata: Metadata = { title: "AI Research & Innovation", description: "Applied AI research, emerging technologies and intelligent automation at PROCODIC." };
 const topics = [{ icon: Sparkles, title: "Generative AI", copy: "Grounding generative capabilities in useful, responsible business applications." }, { icon: Network, title: "Machine learning", copy: "Exploring models and methods that help systems learn from relevant data." }, { icon: ScanText, title: "Language technologies", copy: "Working with natural language to make information more accessible and actionable." }, { icon: Eye, title: "Computer vision", copy: "Investigating visual systems that can interpret images and real-world signals." }, { icon: Bot, title: "AI agents", copy: "Evaluating agentic workflows with clear boundaries, oversight and purpose." }, { icon: BrainCircuit, title: "Intelligent automation", copy: "Connecting people, applications and processes through focused automation." }];

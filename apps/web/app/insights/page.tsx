@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
-import { getPublished, value } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
+import { value } from "@/lib/api";
 
 export const metadata: Metadata = { title: "Insights", description: "Perspectives on enterprise software, applied AI and business automation from PROCODIC." };
 

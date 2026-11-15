@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Layers3, Sparkles, GraduationCap, Check, MoveUpRight } from "lucide-react";
-import { getPublished, value } from "@/lib/api";
+import { getPublished } from "@/lib/public-content";
+import { value } from "@/lib/api";
 import { CapabilityExplorer } from "@/components/capability-explorer";
 import { HeroGraphic } from "@/components/hero-graphic";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -11,9 +13,7 @@ const expertise = [
   { icon: GraduationCap, tag: "GROW", title: "Skills that move you.", description: "Hands-on learning that gives teams the confidence to build, adapt, and make technology their own.", href: "/training", link: "Explore learning", points: ["Corporate training", "Practical workshops", "Professional development"], tone: "orange" },
 ];
 
-export default async function HomePage() {
-  const [products, articles, testimonials] = await Promise.all([getPublished("products"), getPublished("articles"), getPublished("testimonials")]);
-  const featured = [...products.filter(p => p.featured), ...products.filter(p => !p.featured)].slice(0, 3);
+export default function HomePage() {
   return <main className="ux-home">
     <section className="ux-hero"><div className="ux-shell ux-hero-grid">
       <div className="ux-hero-copy"><div className="ux-eyebrow"><span className="ux-live-dot" /> ENGINEERING WHAT'S NEXT</div><h1>Better systems.<br /><span>Bigger possibilities.</span></h1><p>Software, applied AI, and the skills to use them. We help ambitious teams turn complex challenges into work that flows.</p><div className="ux-actions"><Link className="ux-btn ux-btn-primary" href="/contact">Let’s build something <ArrowUpRight size={18}/></Link><a className="ux-btn ux-btn-ghost" href="#expertise">Explore our expertise <ArrowRight size={17}/></a></div><div className="ux-hero-note"><span>Built around your business.</span><span>Designed for what comes next.</span></div></div>
@@ -26,14 +26,30 @@ export default async function HomePage() {
 
     <section className="ux-process-section"><div className="ux-shell ux-process-grid"><div><p className="ux-eyebrow">THE WAY WE WORK</p><h2>Less complexity.<br />More momentum.</h2><p className="ux-body-copy">Good work starts with a shared understanding. We bring you into the process, make the decisions clear, and build toward a useful outcome.</p><Link className="ux-text-link" href="/about">Get to know PROCODIC <ArrowUpRight size={17}/></Link></div><ol className="ux-process-list">{[["Discover", "Understand the real challenge.", "Your people, workflows, and constraints shape the brief."],["Design & build", "Make the right thing, together.", "Turn the brief into a clear direction, then a working solution."],["Evolve", "Keep moving forward.", "Learn from real use, refine the experience, and prepare for what’s next."]].map(([label,title,copy],i)=><li key={label}><span className="ux-step-number">0{i+1}</span><div><span className="ux-step-label">{label}</span><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></div></section>
 
-    {featured.length>0&&<section className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">OUR PRODUCTS</p><h2>Purpose-built for<br />the work ahead.</h2></div><Link className="ux-text-link" href="/products">All products <ArrowRight size={17}/></Link></div><div className="ux-work-grid">{featured.map((product,i)=><Link className="ux-work-card" href={"/products/"+product.slug} key={product.id}><div className={"ux-work-art ux-art-"+i}><Layers3 size={62} strokeWidth={.8}/><span>{value(product,"category","Business software")}</span><ArrowUpRight size={22}/></div><h3>{product.title}</h3><p>{value(product,"description",value(product,"tagline","Discover a more connected way to work."))}</p></Link>)}</div></div></section>}
+    <Suspense fallback={null}><FeaturedProducts /></Suspense>
 
     <section className="ux-industry-section"><div className="ux-shell ux-industry-grid"><div><p className="ux-eyebrow">BUILT FOR YOUR CONTEXT</p><h2>Different industries.<br />The same curiosity.</h2></div><div><p className="ux-body-copy">Every industry has its own language, challenges, and opportunities. That’s where we begin.</p><div className="ux-industry-chips">{["Healthcare","Education","Financial services","Retail & commerce","Manufacturing","Professional services"].map(x=><Link key={x} href="/contact?category=consultation">{x}<ArrowUpRight size={14}/></Link>)}</div></div></div></section>
 
-    {testimonials.length>0&&<section className="ux-section"><div className="ux-shell ux-quote"><p className="ux-eyebrow">FROM OUR COLLABORATORS</p><blockquote>“{value(testimonials[0],"content",value(testimonials[0],"quote"))}”</blockquote><p><strong>{value(testimonials[0],"author",testimonials[0].title)}</strong><span>{[value(testimonials[0],"designation"),value(testimonials[0],"company")].filter(Boolean).join(" · ")}</span></p></div></section>}
+    <Suspense fallback={null}><ClientQuote /></Suspense>
 
-    {articles.length>0&&<section className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">IDEAS IN PROGRESS</p><h2>A little perspective.<br />A new possibility.</h2></div><Link className="ux-text-link" href="/insights">Read our insights <ArrowRight size={17}/></Link></div><div className="ux-insight-grid">{articles.slice(0,3).map(article=><Link className="ux-insight" href={"/insights/"+article.slug} key={article.id}><span>{value(article,"category","Insight")}</span><h3>{article.title}</h3><span className="ux-text-link">Read the story <ArrowUpRight size={17}/></span></Link>)}</div></div></section>}
+    <Suspense fallback={null}><LatestInsights /></Suspense>
 
     <section className="ux-final-section"><div className="ux-shell ux-final"><div><p className="ux-eyebrow">YOUR NEXT CHAPTER</p><h2>Great work starts<br />with a conversation.</h2><p>A challenge, a question, or an idea. Let’s see where it takes us.</p><Link className="ux-btn" href="/contact">Start a conversation <ArrowUpRight size={18}/></Link></div><MoveUpRight className="ux-final-arrow" strokeWidth={.6} aria-hidden="true"/></div></section>
   </main>;
+}
+
+async function FeaturedProducts() {
+  const products = await getPublished("products");
+  const featured = [...products.filter(p => p.featured), ...products.filter(p => !p.featured)].slice(0, 3);
+  return featured.length>0&&<section className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">OUR PRODUCTS</p><h2>Purpose-built for<br />the work ahead.</h2></div><Link className="ux-text-link" href="/products">All products <ArrowRight size={17}/></Link></div><div className="ux-work-grid">{featured.map((product,i)=><Link className="ux-work-card" href={"/products/"+product.slug} key={product.id}><div className={"ux-work-art ux-art-"+i}><Layers3 size={62} strokeWidth={.8}/><span>{value(product,"category","Business software")}</span><ArrowUpRight size={22}/></div><h3>{product.title}</h3><p>{value(product,"description",value(product,"tagline","Discover a more connected way to work."))}</p></Link>)}</div></div></section>;
+}
+
+async function ClientQuote() {
+  const testimonials = await getPublished("testimonials");
+  return testimonials.length>0&&<section className="ux-section"><div className="ux-shell ux-quote"><p className="ux-eyebrow">FROM OUR COLLABORATORS</p><blockquote>“{value(testimonials[0],"content",value(testimonials[0],"quote"))}”</blockquote><p><strong>{value(testimonials[0],"author",testimonials[0].title)}</strong><span>{[value(testimonials[0],"designation"),value(testimonials[0],"company")].filter(Boolean).join(" · ")}</span></p></div></section>;
+}
+
+async function LatestInsights() {
+  const articles = await getPublished("articles");
+  return articles.length>0&&<section className="ux-section"><div className="ux-shell"><div className="ux-section-head"><div><p className="ux-eyebrow">IDEAS IN PROGRESS</p><h2>A little perspective.<br />A new possibility.</h2></div><Link className="ux-text-link" href="/insights">Read our insights <ArrowRight size={17}/></Link></div><div className="ux-insight-grid">{articles.slice(0,3).map(article=><Link className="ux-insight" href={"/insights/"+article.slug} key={article.id}><span>{value(article,"category","Insight")}</span><h3>{article.title}</h3><span className="ux-text-link">Read the story <ArrowUpRight size={17}/></span></Link>)}</div></div></section>;
 }
