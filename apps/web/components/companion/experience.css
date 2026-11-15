@@ -1,0 +1,58 @@
+/* The real explorer card remains untouched: back body at z0, original card z1, paws z3. */
+.companion-behind { position:absolute; z-index:0; pointer-events:none; transform-origin:50% 80%; }
+.companion-paws { position:absolute; z-index:3; pointer-events:none; }
+.companion-paws svg { display:block; width:100%; height:auto; }
+.companion-scene-controls { position:absolute; left:0; z-index:4; display:flex; align-items:center; gap:6px; }
+.companion-scene-controls button { display:flex; gap:9px; align-items:center; min-height:34px; border:1px solid var(--ux-line); border-radius:20px; background:var(--ux-surface); color:var(--ux-muted); padding:6px 11px; font:500 10px/1.3 var(--sans); cursor:pointer; }
+.companion-scene-controls button>span { color:var(--ux-accent); font-size:9px; }
+.companion-scene-controls button:last-child { width:34px; justify-content:center; padding:0; }
+.companion-actor { position:fixed; top:0; left:0; z-index:45; pointer-events:none; isolation:isolate; }
+.companion-figure { transform-origin:50% 88%; }
+.companion-character-button { display:block; width:100%; padding:0; margin:0; border:0; background:transparent; cursor:pointer; pointer-events:auto; border-radius:46%; }
+.companion-character-button:focus-visible { outline:2px solid var(--ux-accent); outline-offset:3px; }
+.companion-actor[data-phase="launch"] .companion-character-button { pointer-events:none; }
+.companion-actor[data-side="left"] .pip-character[data-state="pointing"] .pip-hand-left { transform:none; }
+.companion-actor[data-side="left"] .pip-character[data-state="pointing"] .pip-hand-right { transform:rotate(-110deg) translateY(-4px); }
+.companion-actor[data-side="left"] .pip-character[data-state="pointing"] .pip-head { transform:rotate(8deg); }
+.companion-tools { display:flex; justify-content:center; gap:5px; margin-top:-2px; opacity:0; transition:opacity .2s; }
+.companion-actor:hover .companion-tools,.companion-actor:focus-within .companion-tools { opacity:1; }
+.companion-tools button { display:grid; place-items:center; width:28px; height:28px; border:1px solid var(--ux-line); background:var(--ux-surface); color:var(--ux-muted); border-radius:50%; cursor:pointer; pointer-events:auto; }
+.companion-tools button:hover { color:var(--ux-accent); border-color:var(--ux-accent); }
+.companion-speech { position:absolute; bottom:60px; right:calc(100% + 2px); width:248px; max-height:min(calc(100dvh - 120px),var(--companion-space,600px)); overflow:auto; padding:16px; border:1px solid var(--ux-line); border-radius:18px 18px 5px 18px; background:var(--ux-surface); color:var(--ux-ink); box-shadow:0 18px 55px #061d2920,0 2px 8px #061d2910; pointer-events:auto; transform-origin:100% 85%; font-family:var(--sans); }
+.companion-speech[data-side="left"] { left:calc(100% + 2px); right:auto; border-radius:18px 18px 18px 5px; transform-origin:0% 85%; }
+.companion-speech-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:-2px -5px 10px 0; }
+.companion-speech-head>span { display:flex; align-items:center; gap:5px; color:var(--ux-accent); font-size:9px; letter-spacing:.1em; font-weight:700; white-space:nowrap; }
+.companion-speech-head i { display:block; width:5px; height:5px; border-radius:50%; background:#27c1d8; }
+.companion-speech-head b { font-weight:500; font-size:8px; color:var(--ux-muted); letter-spacing:.04em; padding-left:5px; }
+.companion-speech-head button { background:none; border:0; color:var(--ux-muted); cursor:pointer; padding:7px; display:grid; place-items:center; }
+.companion-message { position:relative; margin:0!important; font-size:12px; font-weight:450; line-height:1.65; letter-spacing:0; }
+.companion-text-reserve { visibility:hidden; display:block; }
+.companion-text-typed { position:absolute; inset:0; }
+.companion-caret { display:inline-block; height:11px; width:2px; background:var(--ux-accent); margin-left:2px; vertical-align:-1px; }
+.companion-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.companion-options-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:none; border:0; border-top:1px solid var(--ux-line); padding:10px 0 0; margin-top:13px; color:var(--ux-accent); font-size:11px; font-weight:600; cursor:pointer; min-height:32px; }
+.companion-destinations { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin:12px 0; }
+.companion-destinations button { display:flex; align-items:center; justify-content:space-between; gap:5px; border:1px solid var(--ux-line); border-radius:7px; padding:8px; min-height:36px; font-size:10px; background:var(--ux-soft); color:var(--ux-ink); cursor:pointer; }
+.companion-destinations button:last-child { grid-column:1/-1; }
+.companion-destinations button:hover { color:var(--ux-accent); border-color:var(--ux-accent); }
+.companion-preferences { display:flex; justify-content:space-between; gap:8px; border-top:1px solid var(--ux-line); padding-top:8px; }
+.companion-preferences button { display:flex; align-items:center; gap:4px; background:none; border:0; padding:5px 0; color:var(--ux-muted); font-size:10px; cursor:pointer; min-height:32px; }
+.companion-options small { display:block; font-size:9px; color:var(--ux-muted); margin-top:7px; }
+.companion-restore { border:0; padding:0; background:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline; text-decoration-color:transparent; text-underline-offset:3px; }
+.companion-restore:hover { text-decoration-color:currentColor; }
+html[data-brand-intro="on"] .companion-actor { visibility:hidden; }
+@media(max-width:640px) {
+  .companion-speech { width:min(224px,calc(100vw - 140px)); padding:13px; bottom:30px; right:calc(100% - 5px); }
+  .companion-speech[data-side="left"] { left:auto; right:calc(100% - 5px); }
+  .companion-speech-head b { font-size:7px; }
+  .companion-message { font-size:11px; }
+  .companion-tools { opacity:1; gap:4px; }
+  .companion-tools button { width:30px; height:30px; }
+  .companion-actor[data-editing="true"] { visibility:hidden; }
+  .companion-scene-controls { gap:4px; }
+  .companion-scene-controls button { font-size:9px; padding:5px 8px; }
+  .companion-scene-controls button>span { font-size:8px; }
+  .companion-destinations { grid-template-columns:1fr; gap:4px; }
+  .companion-destinations button { min-height:34px; }
+}
+@media(prefers-reduced-motion:reduce) { .companion-actor *,.companion-behind * { animation:none!important; transition:none!important; } }
