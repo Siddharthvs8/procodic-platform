@@ -33,10 +33,10 @@ const themeBootstrap = `try {
 }`;
 
 const introBootstrap = `try {
-  if (!location.pathname.startsWith('/admin') && !sessionStorage.getItem('procodic-intro-v1') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!location.pathname.startsWith('/admin') && !sessionStorage.getItem('procodic-intro-v2') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.dataset.brandIntro = 'on';
     setTimeout(function () { delete document.documentElement.dataset.brandIntro; }, 2400);
-    sessionStorage.setItem('procodic-intro-v1', 'seen');
+    sessionStorage.setItem('procodic-intro-v2', 'seen');
   }
 } catch {}`;
 
