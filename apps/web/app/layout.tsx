@@ -8,6 +8,7 @@ import "./navigation-premium.css";
 import "./journey-premium.css";
 import "./brand-intro.css";
 import { SiteChrome } from "@/components/site-chrome";
+import { introBootstrap } from "@/lib/brand-intro";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://procodic.com"),
@@ -31,14 +32,6 @@ const themeBootstrap = `try {
 } catch {
   document.documentElement.dataset.theme = 'light';
 }`;
-
-const introBootstrap = `try {
-  if (!location.pathname.startsWith('/admin') && !sessionStorage.getItem('procodic-intro-v2') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.dataset.brandIntro = 'on';
-    setTimeout(function () { delete document.documentElement.dataset.brandIntro; }, 2400);
-    sessionStorage.setItem('procodic-intro-v2', 'seen');
-  }
-} catch {}`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

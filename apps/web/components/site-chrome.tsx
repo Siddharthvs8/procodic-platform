@@ -11,7 +11,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const admin = pathname.startsWith("/admin");
   return <>
     {!admin && <BrandIntro />}
-    <div id="site-content">
+    <div id="site-content" suppressHydrationWarning>
     {!admin && <a className="public-skip-link" href="#main-content">Skip to content</a>}
     {!admin && <SiteHeader />}
     {admin ? children : <div className="route-transition" id="main-content" tabIndex={-1} key={pathname}>{children}</div>}
