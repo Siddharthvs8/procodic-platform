@@ -6,6 +6,11 @@
 .pip-hand { transform-box:fill-box; transform-origin:50% 20%; transition:transform .6s cubic-bezier(.22,1,.36,1); }
 .pip-foot { transform-box:fill-box; transform-origin:center; transition:transform .5s ease; }
 .pip-shadow { transform-origin:100px 202px; animation:pip-shadow 4.6s ease-in-out infinite; }
+.pip-core { animation:pip-core 3.8s ease-in-out infinite; }
+.pip-wing { opacity:0; transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .25s; }
+.pip-wing-left { transform-origin:47px 106px; transform:rotate(32deg) scale(.6); }
+.pip-wing-right { transform-origin:153px 106px; transform:rotate(-32deg) scale(.6); }
+.pip-thrust { opacity:0; transform-origin:100px 178px; transition:opacity .2s; }
 .pip-happy-eyes,.pip-sleep-eyes,.pip-mouth-open,.pip-spark,.pip-rest { opacity:0; transition:opacity .2s; }
 .pip-smile,.pip-eyes { transition:opacity .2s; }
 .pip-character[data-state="curious"] .pip-head { animation:pip-curiosity 3s ease-in-out infinite; }
@@ -31,6 +36,19 @@
 .pip-character[data-state="resting"] .pip-foot-left { transform:translate(-6px,2px) rotate(-15deg); }
 .pip-character[data-state="resting"] .pip-foot-right { transform:translate(6px,2px) rotate(15deg); }
 .pip-character[data-state="resting"] .pip-rest { animation:pip-sleep 4s ease-in-out infinite; }
+.companion-actor[data-travel="flight"] .pip-body,
+.companion-actor[data-travel="jump"] .pip-body,
+.companion-actor[data-phase="launch"] .pip-body { animation:none; }
+.companion-actor[data-travel="flight"] .pip-wing { opacity:1; transform:rotate(0deg) scale(1); }
+.companion-actor[data-travel="flight"] .pip-thrust { opacity:1; animation:pip-thrust .32s ease-in-out infinite alternate; }
+.companion-actor[data-travel="jump"] .pip-thrust,
+.companion-actor[data-phase="launch"] .pip-thrust { opacity:.45; }
+.companion-actor[data-travel="flight"] .pip-foot-left { transform:translate(3px,-6px) rotate(-18deg); }
+.companion-actor[data-travel="flight"] .pip-foot-right { transform:translate(-3px,-6px) rotate(18deg); }
+.companion-actor[data-travel="flight"] .pip-hand-left { transform:rotate(36deg) translateY(-3px); }
+.companion-actor[data-travel="flight"] .pip-hand-right { transform:rotate(-36deg) translateY(-3px); }
+.companion-actor[data-travel="flight"] .pip-shadow { animation:none; opacity:0; }
+.companion-actor[data-travel="flight"] .pip-core { animation:pip-core .7s ease-in-out infinite; }
 .pip-character[data-still="true"] * { animation:none!important; transition:none!important; }
 @keyframes pip-breathe { 0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.015,.99)} }
 @keyframes pip-blink { 0%,43%,47%,79%,83%,100%{transform:scaleY(1)}45%,81%{transform:scaleY(.07)} }
@@ -42,4 +60,6 @@
 @keyframes pip-nod { 0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg) translateY(2px)} }
 @keyframes pip-spark { 0%,100%{opacity:.3}50%{opacity:1} }
 @keyframes pip-sleep { 0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-7px);opacity:.7} }
+@keyframes pip-core { 0%,100%{opacity:.65}50%{opacity:1} }
+@keyframes pip-thrust { from{transform:scaleY(.8);opacity:.7}to{transform:scaleY(1);opacity:1} }
 @media(prefers-reduced-motion:reduce){.pip-character *{animation:none!important;transition:none!important;}}

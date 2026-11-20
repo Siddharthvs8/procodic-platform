@@ -7,7 +7,13 @@
 .companion-scene-controls button>span { color:var(--ux-accent); font-size:9px; }
 .companion-scene-controls button:last-child { width:34px; justify-content:center; padding:0; }
 .companion-actor { position:fixed; top:0; left:0; z-index:45; pointer-events:none; isolation:isolate; }
-.companion-figure { transform-origin:50% 88%; }
+.companion-figure { position:relative; transform-origin:50% 68%; }
+.companion-flight-wake { position:absolute; inset:0; z-index:-1; width:100%; height:100%; opacity:0; overflow:visible; pointer-events:none; stroke:#48dfff; stroke-width:2; stroke-linecap:round; stroke-dasharray:15 30; transition:opacity .18s; }
+.companion-flight-wake path:nth-child(2) { stroke:#c9fcff; stroke-width:1; stroke-dasharray:8 30; }
+.companion-actor[data-travel="flight"] .companion-flight-wake { opacity:.65; animation:companion-wake .55s linear infinite; }
+.companion-actor[data-travel="jump"] .companion-flight-wake { opacity:.3; animation:companion-wake .7s linear infinite; }
+.companion-actor[data-suspended="true"] .companion-flight-wake { animation-play-state:paused; }
+@keyframes companion-wake { to { stroke-dashoffset:-45; } }
 .companion-character-button { display:block; width:100%; padding:0; margin:0; border:0; background:transparent; cursor:pointer; pointer-events:auto; border-radius:46%; }
 .companion-character-button:focus-visible { outline:2px solid var(--ux-accent); outline-offset:3px; }
 .companion-actor[data-phase="launch"] .companion-character-button { pointer-events:none; }
