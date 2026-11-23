@@ -1,41 +1,37 @@
-# Pip: the public website companion
+# Nova: the flying AI pet
 
-Pip is original SVG artwork with local, predefined expressions and guidance. There are no chat requests, model services, new backend routes, or database changes.
+Nova is an original robotic pet for PROCODIC’s public website. The rounded shell, expressive glass face, ear fins, articulated paws, tail, and cyan thrusters are built directly in Three.js. It replaces the human character. Its guidance consists of editable frontend messages, with no LLM, chatbot API, or database dependency.
 
-The sculpted design uses layered ceramic and metal gradients, a reflective inset visor, optical irises, a translucent crest, articulated hands and feet, and an emissive chest core. Flight deploys translucent fins and paired ion exhausts; the original silhouette and card-edge eye/paw anchors remain consistent. All materials are inline vectors, with no raster downloads, SVG blur filters, WebGL engine, or additional dependencies.
+## Appearance and flight
 
-## Integration
+`pet-rig.ts` constructs and animates the pet in 3D. The face reacts through eyes, blinking, mouth shapes, head tilt, and ear motion. Paws and the tail provide body language; paw and foot thrusters support powered flight and hovering. The SVG fallback follows the same pet design when WebGL is unavailable.
 
-`SiteChrome` mounts a small loader outside `#site-content` and its route transforms. The experience is dynamically imported when the real `.ux-explorer-window` approaches the viewport, or when an already-introduced visitor navigates to another public page. Admin routes never mount it.
+`travel.ts` synchronizes position with the 3D pose: engine anticipation, vertical boost, acceleration, banked cruise, counter-thrust braking, and a soft touchdown. Longer section journeys use flight. Short movements can hop; flips remain occasional play/click tricks. Ordinary travel is click-through so the pet does not intercept navigation.
 
-The card and its existing styles remain intact. During introduction, React portals place the body at z-index 0 inside the existing `.ux-explorer`, behind the card at z-index 1. A separate pair of paws at z-index 3 grips its actual top edge. Position calculations read the card dimensions, including the different mobile padding.
+The existing capability card remains the reveal surface. Nova peeks from behind it, grips the edge with mechanical paws, pulls up, and boosts into view. Active perches attach to real cards/panels in document space. Where a suitable surface is unavailable, a small projected step sits beside the section. Fast scrolling preserves the actual departure position, including offscreen departures, rather than teleporting the pet into view.
 
-## Choreography
+## Performance and controls
 
-1. Waiting: no visible character until the card is actually on screen and the brand intro has finished.
-2. Peeking: a 5.2-second Motion timeline raises the eyes, looks around, retreats, peeks around the side, and raises the head with the foreground paws.
-3. Hanging: remains on the edge until the card reaches 64% of viewport height. Visitors can also skip the reveal.
-4. Launch: a 1.38-second anticipation, arcing jump, squash/stretch, and landing. The viewport actor begins at the same coordinates as the behind-card actor when that position is on screen.
-5. Active: short moves use a 1.12-second hop; longer crossings use an elevated flight path with a wing-over, banking, and a settled landing in up to 2.15 seconds. A compact mobile perch also gets a contained hop when the context changes. A settled card perch is retained until the visitor scrolls farther.
-6. Settled: contextual typing bubbles, pointer tracking, link reactions, and a predefined navigation panel. Speech stays hidden during travel and returns after landing.
+- The homepage defers the companion runtime until the capability card approaches the viewport, after the logo intro. Direct public-page visits load the guide during idle time. Admin routes do not mount it.
+- The pet geometry is procedural: no human mesh, skin texture, or external model download is required.
+- A short renderer lease keeps one canvas through the card-to-page handoff. Device pixel ratio and animation frame rate are capped.
+- Offscreen canvases and hidden tabs stop rendering. Pause, reduced motion, and form focus stop continuous animation. On narrow screens the pet hides while a form is focused.
+- Hide and pause preferences persist in the current tab. The footer’s guide button restores a hidden pet. Escape closes directions, and keyboard-focused controls stay stationary.
+- Cleanup releases listeners, observers, timers, geometry, materials, and the WebGL context.
 
-`travel.ts` samples a bounded path into synchronized position, bank, and body-scale keyframes. Motion values drive those frames without rendering React on each tick. Flight wakes are SVG strokes visible only during movement. The existing Motion dependency handles the choreography; no physics engine, canvas renderer, or additional runtime dependency is needed.
+## Guidance and play
 
-Desktop and mobile landings account for the complete body, speech bubble, and controls. The bubble scrolls internally in short viewports. Important content remains clickable; only the character and its controls accept pointer input.
+`story.ts` contains predefined section messages, expressions, perch preferences, feature highlights, and playful responses. Public sections use `data-companion-section`, including product/research/course detail pages. Messages appear after arrival and expose one complete polite announcement to assistive technology.
 
-## Accessibility and lifecycle
-
-- Reduced motion skips the choreography and disables idle motion; no automatic focus changes accompany the normal reveal.
-- Skip, pause/resume, hide, keyboard controls, and footer restoration are available. Escape closes the interaction panel and restores character-button focus.
-- The typed copy has one complete polite announcement; individual letters are decorative and do not trigger live announcements.
-- Pip gives mobile form fields space while they are focused.
-- Open directions and focused companion controls remain stationary. Form focus stops travel; cancellations restore an upright, neutral body pose. Immediate route changes and viewport resizes can still relocate Pip to a safe perch.
-- Introduction, hidden state, and pause preference persist only in this browser tab. Blocked session storage falls back to in-memory behavior.
-- Animation controls, observers, frames, event listeners, and timers clean up on route changes or unmount. Offscreen introductions pause their timelines. Hidden tabs pause both introduction and travel; character and flight effects stop as well.
-- `story.ts` holds route messages, section messages, viewport gates, and tested placement functions. Homepage sections use `data-companion-section`; new routes can be added to `routeStory`.
+“Play with Nova” is optional. Approaching the pet triggers a dodge or evasive maneuver. Clicking or pressing Enter/Space on the pet catches it and produces a reaction. Stop playing returns it to normal guidance. Normal clicks cycle greetings, waves, and occasional flight tricks.
 
 ## Validation
 
-Run `node --test test/brand-intro.test.cjs test/companion.test.cjs test/companion-travel.test.cjs` and the Next production build from `apps/web`. The travel tests cover body/control bounds on phones, tablets, desktops, and short landscape screens; synchronized finite keyframes; neutral landings; same-perch hops; reversed banking; interruption without a position jump; recovery after a viewport shrink; and the larger card launch.
+From `apps/web`, run:
 
-Manually check a fresh tab at the hero (no companion), the top and side peeks, hanging, the second scroll trigger, landing, original card tabs, cross-screen travel after the greeting, directions, navigation persistence, pause, hide/restore, Escape, mobile bubble bounds, and focused form fields.
+```sh
+node --test test/brand-intro.test.cjs test/companion.test.cjs test/companion-travel.test.cjs test/companion-rig.test.cjs
+node node_modules/next/dist/bin/next build
+```
+
+The checks cover intro fail-open behavior, public section guidance, viewport and surface alignment, continuous travel, engine-driven takeoff/braking, articulated pet poses, and reduced motion. Browser checks exercise the reveal, WebGL handoff, play/catch, pause/hide/restore, narrow-screen bounds, form focus, and console errors.

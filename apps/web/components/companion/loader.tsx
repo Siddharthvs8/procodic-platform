@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { COMPANION_SEEN } from "./story";
 
 const Experience = dynamic(() => import("./experience"), { ssr: false });
 
@@ -10,8 +11,21 @@ export function CompanionLoader({ pathname }: { pathname: string }) {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     if (loaded) return;
-    try { if (sessionStorage.getItem("procodic-pip-introduced-v1")) { setLoaded(true); return; } } catch {}
-    if (pathname !== "/") return;
+    try { if (sessionStorage.getItem(COMPANION_SEEN)) { setLoaded(true); return; } } catch {}
+    // Direct visits to a module still get a guide, after the logo and critical page work.
+    if (pathname !== "/") {
+      let queued = false, idle = 0, timer = 0;
+      const ready = () => {
+        if (queued || document.documentElement.dataset.brandIntro) return;
+        queued = true;
+        if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(() => setLoaded(true), { timeout:1200 });
+        else timer = window.setTimeout(() => setLoaded(true), 0);
+      };
+      const observer = new MutationObserver(ready);
+      observer.observe(document.documentElement, { attributes:true, attributeFilter:["data-brand-intro"] });
+      ready();
+      return () => { observer.disconnect(); if (idle) window.cancelIdleCallback(idle); clearTimeout(timer); };
+    }
     const anchor = document.querySelector(".ux-explorer-window");
     if (!anchor) return;
     // Leave initial bandwidth/CPU to the first screen while the logo veil is up.
